@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../php/db.php';
+include '../connection/db.php';
 
 $message = "";
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../php/db.php'; // your database connection
+include '../connection/db.php'; // your database connection
 
 $message = "";
 
@@ -9,7 +9,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email    = strtolower(trim($conn->real_escape_string($_POST['email'])));
     $password = $_POST['password'];
 
-    // query user by email
+    // Hard-coded admin credentials
+    $admin_email    = "admin@gmail.com";
+    $admin_password = "adminuser@123";
+
+    // Check if admin login
+    if ($email === $admin_email && $password === $admin_password) {
+        $_SESSION['admin'] = "Administrator";
+        header("Location: ../admin/admin_dashboard.php");
+        exit();
+    }
+
+    // Otherwise, check normal users in DB
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = $conn->query($sql);
 
@@ -19,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // verify hashed password
         if (password_verify($password, $user['password'])) {
             $_SESSION['user'] = $user['name']; // store user name in session
-            header("Location: dashboard.php"); // redirect to dashboard
+            header("Location: dashboard.php"); // redirect to user dashboard
             exit();
         } else {
             $message = "
