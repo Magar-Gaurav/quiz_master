@@ -1,136 +1,137 @@
 <?php
 session_start();
-include '../connection/db.php';
 
-// Protect user dashboard
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit();
+    $_SESSION['user'] = "John Doe";
 }
+$userName  = $_SESSION['user'];
+$userEmail = $_SESSION['email'] ?? 'Not Available';
 
-$userName = $_SESSION['user'];
-$userEmail = ""; 
-$userId = 0;
+$totalQuizzes   = 8;
+$totalAttempts  = 5;
+$successRate    = 60;
 
-// Fetch user info
-$res = $conn->query("SELECT id, email, status FROM users WHERE name='$userName' LIMIT 1");
-if ($res && $res->num_rows > 0) {
-    $row = $res->fetch_assoc();
-    $userId = $row['id'];
-    $userEmail = $row['email'];
-    $userStatus = $row['status'];
-}
+$attempts = [
+    ["quiz" => "Java Basics", "score" => 70, "date" => "2024-04-01", "status" => "Passed"],
+    ["quiz" => "Database Concepts", "score" => 60, "date" => "2024-03-28", "status" => "Passed"],
+    ["quiz" => "Operating Systems", "score" => 40, "date" => "2024-03-26", "status" => "Failed"],
+];
 
-// Fetch available quizzes
-$quizzes = $conn->query("SELECT id, title, category_id, duration_minutes, total_marks, status 
-                         FROM quizzes WHERE status='enabled' ORDER BY created_at DESC");
-
-// Fetch recent attempts
-$attempts = $conn->query("SELECT a.id, q.title AS quiz_title, a.score, a.created_at
-                          FROM attempts a
-                          LEFT JOIN quizzes q ON q.id=a.quiz_id
-                          WHERE a.user_id=$userId
-                          ORDER BY a.created_at DESC
-                          LIMIT 5");
-
-// Fetch announcements
-$announcements = $conn->query("SELECT title, body, created_at FROM announcements ORDER BY created_at DESC LIMIT 5");
+$announcements = [
+    ["title" => "New Quiz Available", "body" => "Try out the latest Java quiz!", "date" => "2024-04-02"],
+    ["title" => "System Update", "body" => "Dashboard UI has been improved.", "date" => "2024-03-30"],
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard | Quiz App</title>
-  <link rel="stylesheet" href="../css/user.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background:#f6f9fc; margin:0; }
-    header { background:#0d6efd; color:#fff; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; }
-    .brand { font-weight:700; }
-    .nav a { color:#fff; margin-left:15px; text-decoration:none; }
-    .container { max-width:1000px; margin:24px auto; padding:0 16px; }
-    .card { background:#fff; border-radius:10px; padding:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom:20px; }
-    h2 { color:#0d6efd; margin-top:0; }
-    table { width:100%; border-collapse:collapse; }
+    :root {
+      --primary: #0d6efd;
+      --success: #198754;
+      --danger: #dc3545;
+      --bg: #f4f6f8;
+      --card-bg: #fff;
+    }
+    body { margin:0; font-family: 'Poppins', sans-serif; background: var(--bg); }
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--primary);
+      color: #fff;
+      padding: 20px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+    }
+    .brand { font-size: 1.6rem; font-weight: 600; letter-spacing: 1px; }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+    nav a:hover { color: #ffd43b; }
+    .logout-btn {
+      background: #dc3545;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+    .logout-btn:hover { background: #a71d2a; }
+    .container { max-width:1200px; margin:20px auto; padding:0 16px; }
+    .stats { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:20px; }
+    .card { background: var(--card-bg); border-radius:10px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+    .card h2 { margin:0; font-size:2rem; }
+    .card.blue { background: var(--primary); color:#fff; }
+    .card.green { background: var(--success); color:#fff; }
+    .card.red { background: var(--danger); color:#fff; }
+    .section { background: var(--card-bg); padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.08); flex:1; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
     th, td { padding:10px; border-bottom:1px solid #eee; text-align:left; }
     th { background:#f1f5f9; }
-    .logout-btn { background:#dc3545; color:#fff; padding:8px 12px; border-radius:6px; text-decoration:none; }
-    .quiz-btn { background:#0d6efd; color:#fff; padding:6px 10px; border-radius:6px; text-decoration:none; }
+    .passed { color: var(--success); font-weight:bold; }
+    .failed { color: var(--danger); font-weight:bold; }
+    ul { padding-left:20px; }
+    .flex-row { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+    @media (max-width:900px) {
+      .flex-row { flex-direction:column; }
+      nav { flex-direction: column; gap: 10px; }
+    }
   </style>
 </head>
 <body>
 <header>
   <div class="brand">Quiz Master</div>
-  <nav class="nav">
-    <span>Welcome, <?= htmlspecialchars($userName) ?></span>
-    <a href="user_dashboard.php?logout=true" class="logout-btn">Logout</a>
+  <nav>
+    <a href="user_dashboard.php">Dashboard</a>
+    <a href="quizzes.php">Quizzes</a>
+    <a href="profile.php">Profile</a>
+    <a href="./login.php" class="logout-btn">Logout</a>
   </nav>
 </header>
 <div class="container">
 
-  <!-- Profile -->
-  <div class="card">
-    <h2>Your Profile</h2>
-    <p><strong>Name:</strong> <?= htmlspecialchars($userName) ?></p>
-    <p><strong>Email:</strong> <?= htmlspecialchars($userEmail) ?></p>
-    <p><strong>Status:</strong> <?= htmlspecialchars($userStatus) ?></p>
+  <div class="stats">
+    <div class="card blue">Total Quizzes<br><h2><?= $totalQuizzes ?></h2></div>
+    <div class="card green">Quizzes Attempted<br><h2><?= $totalAttempts ?></h2></div>
+    <div class="card red">Success Rate<br><h2><?= $successRate ?>%</h2></div>
   </div>
 
-  <!-- Available Quizzes -->
-  <div class="card">
-    <h2>Available Quizzes</h2>
-    <table>
-      <thead><tr><th>Title</th><th>Duration</th><th>Marks</th><th>Action</th></tr></thead>
-      <tbody>
-        <?php if ($quizzes && $quizzes->num_rows > 0): ?>
-          <?php while ($q = $quizzes->fetch_assoc()): ?>
-            <tr>
-              <td><?= htmlspecialchars($q['title']) ?></td>
-              <td><?= htmlspecialchars($q['duration_minutes']) ?> min</td>
-              <td><?= htmlspecialchars($q['total_marks']) ?></td>
-              <td><a href="start_quiz.php?id=<?= $q['id'] ?>" class="quiz-btn">Start</a></td>
-            </tr>
-          <?php endwhile; ?>
-        <?php else: ?>
-          <tr><td colspan="4">No quizzes available right now.</td></tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
+  <div class="flex-row">
+    <div class="section">
+      <h3>Recent Attempts</h3>
+      <table>
+        <tr><th>Quiz Name</th><th>Score</th><th>Date</th><th>Status</th></tr>
+        <?php foreach ($attempts as $a): ?>
+          <tr>
+            <td><?= htmlspecialchars($a['quiz']) ?></td>
+            <td><?= $a['score'] ?></td>
+            <td><?= $a['date'] ?></td>
+            <td class="<?= strtolower($a['status']) ?>"><?= $a['status'] ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Your Profile</h3>
+      <p><strong>Name:</strong> <?= htmlspecialchars($userName) ?></p>
+      <p><strong>Email:</strong> <?= htmlspecialchars($userEmail) ?></p>
+    </div>
   </div>
 
-  <!-- Recent Attempts -->
-  <div class="card">
-    <h2>Your Recent Attempts</h2>
-    <table>
-      <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
-      <tbody>
-        <?php if ($attempts && $attempts->num_rows > 0): ?>
-          <?php while ($a = $attempts->fetch_assoc()): ?>
-            <tr>
-              <td><?= htmlspecialchars($a['quiz_title']) ?></td>
-              <td><?= htmlspecialchars($a['score']) ?></td>
-              <td><?= htmlspecialchars($a['created_at']) ?></td>
-            </tr>
-          <?php endwhile; ?>
-        <?php else: ?>
-          <tr><td colspan="3">No attempts yet.</td></tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Announcements -->
-  <div class="card">
-    <h2>Announcements</h2>
-    <?php if ($announcements && $announcements->num_rows > 0): ?>
-      <ul>
-        <?php while ($an = $announcements->fetch_assoc()): ?>
-          <li><strong><?= htmlspecialchars($an['title']) ?>:</strong> <?= htmlspecialchars($an['body']) ?> (<?= $an['created_at'] ?>)</li>
-        <?php endwhile; ?>
-      </ul>
-    <?php else: ?>
-      <p>No announcements at the moment.</p>
-    <?php endif; ?>
+  <div class="section">
+    <h3>Announcements</h3>
+    <ul>
+      <?php foreach ($announcements as $an): ?>
+        <li><strong><?= htmlspecialchars($an['title']) ?>:</strong> <?= htmlspecialchars($an['body']) ?> (<?= $an['date'] ?>)</li>
+      <?php endforeach; ?>
+    </ul>
   </div>
 
 </div>
