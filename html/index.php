@@ -1,3 +1,17 @@
+<?php
+// Include DB connection
+include '../connection/db.php';
+
+// Fetch top 5 players
+$query = "SELECT username, score FROM leaderboard ORDER BY score DESC LIMIT 5";
+$result = mysqli_query($conn, $query);
+
+// Store players in array
+$players = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $players[] = $row;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +29,7 @@
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+    <link rel="icon" type="image/x-icon" href="../images/logo.png">
 
     <!-- Font Awesome CDN for social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -34,7 +48,7 @@
     <header class="nav">
         <div class="nav-inner">
             <!-- Brand Logo + Text -->
-            <a href="./index.html" class="brand">
+            <a href="./index.php" class="brand">
                 <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
                 <span>Quiz Master</span>
             </a>
@@ -47,9 +61,9 @@
 
             <!-- Navigation links -->
             <ul class="menu">
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./about.html">About</a></li>
-                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./index.php">Home</a></li>
+                <li><a href="./about.php">About</a></li>
+                <li><a href="./contact.php">Contact</a></li>
                 <!-- Login button -->
                 <button class="nav-btn"><a href="./login.php" class="btn">Login</a></button>
             </ul>
@@ -76,7 +90,6 @@
         <section class="features" data-aos="fade-up">
             <h2 class="features-title">Why Choose Quiz Master?</h2>
             <div class="features-grid">
-                <!-- Feature cards -->
                 <div class="feature-card">
                     <span class="feature-icon">🧠</span>
                     <h3>Smart Learning</h3>
@@ -104,40 +117,24 @@
         <section class="leaderboard" data-aos="zoom-in">
             <h2 class="leaderboard-title">🏆 Top Players</h2>
             <div class="leaderboard-grid">
-                <!-- Leaderboard cards -->
-                <div class="leaderboard-card first">
-                    <span class="rank">1</span>
-                    <h3>Alex Sharma</h3>
-                    <p>Score: 980 pts</p>
-                </div>
-                <div class="leaderboard-card second">
-                    <span class="rank">2</span>
-                    <h3>Priya Singh</h3>
-                    <p>Score: 920 pts</p>
-                </div>
-                <div class="leaderboard-card third">
-                    <span class="rank">3</span>
-                    <h3>Rahul Karki</h3>
-                    <p>Score: 890 pts</p>
-                </div>
-                <div class="leaderboard-card">
-                    <span class="rank">4</span>
-                    <h3>Sneha Rai</h3>
-                    <p>Score: 860 pts</p>
-                </div>
-                <div class="leaderboard-card">
-                    <span class="rank">5</span>
-                    <h3>Deepak Magar</h3>
-                    <p>Score: 830 pts</p>
-                </div>
+                <?php if (!empty($players)): ?>
+                    <?php foreach ($players as $index => $player): ?>
+                        <div class="leaderboard-card <?= $index == 0 ? 'first' : ($index == 1 ? 'second' : ($index == 2 ? 'third' : '')) ?>">
+                            <span class="rank"><?= $index + 1 ?></span>
+                            <h3><?= htmlspecialchars($player['username']) ?></h3>
+                            <p>Score: <?= $player['score'] ?> pts</p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="no-leaderboard">No leaderboard yet — be the first to play!</p>
+                <?php endif; ?>
             </div>
         </section>
 
-        <!-- Quiz Section -->
+        <!-- Quiz Categories -->
         <section class="quiz-categories" data-aos="fade-up">
             <h2 class="categories-title">🎯 Quiz Categories</h2>
             <div class="categories-grid">
-                <!-- Category cards -->
                 <div class="category-card">
                     <span class="category-icon">🧪</span>
                     <h3>Science</h3>
@@ -164,8 +161,6 @@
         <!-- FAQs -->
         <section class="faq" data-aos="fade-up">
             <h2 class="faq-title">❓ Frequently Asked Questions</h2>
-
-            <!-- FAQ item -->
             <div class="faq-item">
                 <button class="faq-question">
                     Is Quiz Master free?
@@ -175,8 +170,6 @@
                     <p>Yes, Quiz Master is completely free to use. You can play quizzes without any cost.</p>
                 </div>
             </div>
-
-            <!-- FAQ item -->
             <div class="faq-item">
                 <button class="faq-question">
                     Do I need to sign up?
@@ -187,8 +180,6 @@
                         progress, save your scores, and connect you to the global leaderboard for fair competition.</p>
                 </div>
             </div>
-
-            <!-- FAQ item -->
             <div class="faq-item">
                 <button class="faq-question">
                     How are scores calculated?
@@ -199,8 +190,6 @@
                         your score.</p>
                 </div>
             </div>
-
-            <!-- FAQ item -->
             <div class="faq-item">
                 <button class="faq-question">
                     Can I play on mobile?
@@ -213,7 +202,7 @@
         </section>
     </main>
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <!-- Left side: brand and tagline -->
@@ -237,9 +226,10 @@
         </div>
     </footer>
 
-    <!--  -->
+    <!-- Scripts -->
     <script src="../js/script.js"></script>
     <!-- AOS initialization -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 </body>
+
 </html>
