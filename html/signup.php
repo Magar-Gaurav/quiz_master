@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       <!-- Brand -->
       <a href="./index.html" class="brand">
-        <img src="../images/logo.png" alt="Quiz Master Logo" class="logo-img">
+        <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
         <span>Quiz Master</span>
       </a>
 
