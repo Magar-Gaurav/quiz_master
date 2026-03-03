@@ -29,7 +29,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../images/logo.png">
+    <link rel="icon" type="image/x-icon" href="../images/download.png">
 
     <!-- Font Awesome CDN for social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -43,28 +43,22 @@ while ($row = mysqli_fetch_assoc($result)) {
 </head>
 
 <body>
-
-    <!-- Navbar -->
     <header class="nav">
         <div class="nav-inner">
-            <!-- Brand Logo + Text -->
             <a href="./index.php" class="brand">
                 <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
                 <span>Quiz Master</span>
             </a>
 
-            <!-- Hamburger menu for mobile -->
             <input type="checkbox" id="menu-toggle" class="menu-toggle">
             <label for="menu-toggle" class="hamburger">
                 <span></span>
             </label>
 
-            <!-- Navigation links -->
             <ul class="menu">
                 <li><a href="./index.php">Home</a></li>
-                <li><a href="./about.php">About</a></li>
-                <li><a href="./contact.php">Contact</a></li>
-                <!-- Login button -->
+                <li><a href="./about.html">About</a></li>
+                <li><a href="./contact.html">Contact</a></li>
                 <button class="nav-btn"><a href="./login.php" class="btn">Login</a></button>
             </ul>
         </div>

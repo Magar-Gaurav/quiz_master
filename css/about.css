@@ -1,8 +1,8 @@
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #cfe9ff, #a3d4ff);
-  color: #333;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0a1f44;
+    color: #fff;
 }
 
 
@@ -18,11 +18,11 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
+
 .nav {
     position: sticky;
     top: 0;
     background: linear-gradient(180deg, rgba(8, 10, 14, .55), rgba(8, 10, 14, .35));
-    /* padding: clamp(0.5rem, 1vw + 0.2rem, 1rem) clamp(1rem, 2vw + 0.5rem, 3rem); */
     padding: 1.02rem;
     border-bottom: 1px solid rgba(255, 255, 255, .12);
     backdrop-filter: blur(12px);
@@ -189,64 +189,64 @@ ul>li:hover {
 }
 
 .about-section {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 }
 
 .about-container {
-  max-width: 800px;
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    max-width: 800px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .about-container h1 {
-  color: #1e90ff;
-  margin-bottom: 20px;
+    color: #1e90ff;
+    margin-bottom: 20px;
 }
 
 .about-container h2 {
-  margin-top: 30px;
-  color: #0f52ba;
+    margin-top: 30px;
+    color: #0f52ba;
 }
 
 .about-container ul {
-  margin: 15px 0;
-  padding-left: 20px;
+    margin: 15px 0;
+    padding-left: 20px;
 }
 
 .about-container li {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 .site-footer {
-  text-align: center;
-  padding: 20px;
-  background-color: #1e90ff;
-  color: white;
+    text-align: center;
+    padding: 20px;
+    background-color: #1e90ff;
+    color: white;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .about-container {
-    padding: 20px;
-  }
+    .about-container {
+        padding: 20px;
+    }
 }
 
 @media (max-width: 480px) {
-  .about-container {
-    padding: 15px;
-  }
+    .about-container {
+        padding: 15px;
+    }
 
-  .about-container h1 {
-    font-size: 24px;
-  }
+    .about-container h1 {
+        font-size: 24px;
+    }
 
-  .about-container h2 {
-    font-size: 18px;
-  }
+    .about-container h2 {
+        font-size: 18px;
+    }
 }
 
 .footer {
@@ -377,6 +377,7 @@ ul>li:hover {
         margin: 6px;
     }
 }
+
 @media(max-width: 900px) {
     .menu {
         position: absolute;
@@ -464,4 +465,3 @@ ul>li:hover {
     text-shadow: 0 0 8px #0A66C2;
     transform: scale(1.2);
 }
-

@@ -1,54 +1,65 @@
 <?php
 session_start();
-include '../connection/db.php'; // your database connection
+require_once '../connection/db.php';
 
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  // sanitize inputs
-  $email    = strtolower(trim($conn->real_escape_string($_POST['email'])));
-  $password = $_POST['password'];
 
-  // Hard-coded admin credentials
-  $admin_email    = "admin@gmail.com";
-  $admin_password = "adminuser@123";
+    $email = trim(strtolower($_POST['email']));
+    $password = $_POST['password'];
 
-  // Check if admin login
-  if ($email === $admin_email && $password === $admin_password) {
-    $_SESSION['admin'] = "Administrator";
-    header("Location: ../admin/admin_dashboard.php");
-    exit();
-  }
+    /* ================= ADMIN LOGIN ================= */
+    $stmt = $conn->prepare("SELECT id, username, email, password FROM admins WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $adminResult = $stmt->get_result();
 
-  // Otherwise, check normal users in DB
-  $sql = "SELECT * FROM users WHERE email='$email'";
-  $result = $conn->query($sql);
+    if ($adminResult->num_rows === 1) {
+        $admin = $adminResult->fetch_assoc();
 
-  if ($result && $result->num_rows > 0) {
-    $user = $result->fetch_assoc();
+        if (password_verify($password, $admin['password'])) {
 
-    // verify hashed password
-    if (password_verify($password, $user['password'])) {
-      $_SESSION['user']  = $user['name'];   // store user name
-      $_SESSION['email'] = $user['email'];  // store user email
-      header("Location: dashboard.php");    // redirect to user dashboard
-      exit();
-    } else {
-      $message = "
-            <div class='message-box error'>
-                Invalid password. Please try again.
-                <button class='close-btn' onclick='this.parentElement.style.display=\"none\";'>&times;</button>
-            </div>";
+            session_regenerate_id(true);
+
+            $_SESSION['admin_id']   = $admin['id'];
+            $_SESSION['admin_name'] = $admin['username'];
+            $_SESSION['admin_email']= $admin['email'];
+
+            header("Location: ../partials/admin_dashboard.php");
+            exit();
+        }
     }
-  } else {
-    $message = "
-        <div class='message-box error'>
-            No account found with that email.
-            <button class='close-btn' onclick='this.parentElement.style.display=\"none\";'>&times;</button>
-        </div>";
-  }
+    $stmt->close();
+
+    /* ================= USER LOGIN ================= */
+    $stmt = $conn->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $userResult = $stmt->get_result();
+
+    if ($userResult->num_rows === 1) {
+        $user = $userResult->fetch_assoc();
+
+        if (password_verify($password, $user['password'])) {
+
+            session_regenerate_id(true);
+
+            $_SESSION['user_id']    = $user['id'];
+            $_SESSION['user_name']  = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
+
+            header("Location: dashboard.php");
+            exit();
+        }
+    }
+    $stmt->close();
+
+    $message = "<div class='message-box error'>Invalid email or password.</div>";
 }
 ?>
+<!-- HTML form stays the same -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,15 +67,87 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Quiz App</title>
-  <link rel="stylesheet" href="../css/login.css" />
-  <!-- font awesome cdn -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- google fonts -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_right_alt" />
   <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #1f2937;
+      color: #f9fafb;
+      margin: 0;
+    }
+    .nav {
+      background: #111827;
+      padding: 10px 20px;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+    }
+    .brand img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .menu a {
+      text-decoration: none;
+      color: #d1d5db;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 60px auto;
+      background: #2d3748;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    }
+    .login-form h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .login-form label {
+      display: block;
+      margin: 10px 0 6px;
+      font-weight: 600;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #374151;
+      color: #f9fafb;
+      margin-bottom: 12px;
+    }
+    .login-form button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .login-form button:hover {
+      background: #1d4ed8;
+    }
+    .signup-link {
+      text-align: center;
+      margin-top: 15px;
+    }
     .message-box {
       position: relative;
       padding: 12px 16px;
@@ -74,19 +157,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       font-size: 15px;
       text-align: center;
     }
-
-    .success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-
     .error {
       background-color: #f8d7da;
       color: #721c24;
       border: 1px solid #f5c6cb;
     }
-
     .close-btn {
       position: absolute;
       top: 6px;
@@ -98,21 +173,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       color: inherit;
       cursor: pointer;
     }
+    .footer {
+      background: #111827;
+      color: #9ca3af;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+      display:block;
+      bottom: 0;
+    }
+    .footer a {
+      color: #9ca3af;
+      margin: 0 8px;
+      text-decoration: none;
+    }
   </style>
 </head>
 
 <body>
   <header class="nav">
     <div class="nav-inner">
-      <!-- Brand -->
-      <a href="./index.html" class="brand">
+      <a href="./index.php" class="brand">
         <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
         <span>Quiz Master</span>
       </a>
-      <!-- Hamburger -->
-      <input type="checkbox" id="menu-toggle" class="menu-toggle">
-      <label for="menu-toggle" class="hamburger"><span></span></label>
-      <!-- Menu -->
       <ul class="menu">
         <li><a href="index.html">Home</a></li>
         <li><a href="./about.html">About</a></li>
@@ -144,22 +228,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   </main>
 
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-left">
-        <strong>Quiz Master</strong>
-        <p class="tagline">Challenge your mind, have fun!</p>
-      </div>
-      <div class="footer-right">
-        <a href="https://facebook.com" target="_blank" id="fb"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://instagram.com" target="_blank" id="insta"><i class="fab fa-instagram"></i></a>
-        <a href="https://twitter.com" target="_blank" id="twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://linkedin.com" target="_blank" id="linkedin"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 QuizMaster. All rights reserved.</p>
+    <p>© 2025 QuizMaster. All rights reserved.</p>
+    <div>
+      <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
     </div>
   </footer>
 </body>
-
 </html>

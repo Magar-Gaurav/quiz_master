@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="nav-inner">
 
       <!-- Brand -->
-      <a href="./index.html" class="brand">
+      <a href="./index.php" class="brand">
         <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
         <span>Quiz Master</span>
       </a>
