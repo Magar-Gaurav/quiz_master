@@ -6,56 +6,56 @@ $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $email = trim(strtolower($_POST['email']));
-    $password = $_POST['password'];
+  $email = trim(strtolower($_POST['email']));
+  $password = $_POST['password'];
 
-    /* ================= ADMIN LOGIN ================= */
-    $stmt = $conn->prepare("SELECT id, username, email, password FROM admins WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $adminResult = $stmt->get_result();
+  /* ================= ADMIN LOGIN ================= */
+  $stmt = $conn->prepare("SELECT id, username, email, password FROM admins WHERE email = ?");
+  $stmt->bind_param("s", $email);
+  $stmt->execute();
+  $adminResult = $stmt->get_result();
 
-    if ($adminResult->num_rows === 1) {
-        $admin = $adminResult->fetch_assoc();
+  if ($adminResult->num_rows === 1) {
+    $admin = $adminResult->fetch_assoc();
 
-        if (password_verify($password, $admin['password'])) {
+    if (password_verify($password, $admin['password'])) {
 
-            session_regenerate_id(true);
+      session_regenerate_id(true);
 
-            $_SESSION['admin_id']   = $admin['id'];
-            $_SESSION['admin_name'] = $admin['username'];
-            $_SESSION['admin_email']= $admin['email'];
+      $_SESSION['admin_id']   = $admin['id'];
+      $_SESSION['admin_name'] = $admin['username'];
+      $_SESSION['admin_email'] = $admin['email'];
 
-            header("Location: ../partials/admin_dashboard.php");
-            exit();
-        }
+      header("Location: ../partials/admin_dashboard.php");
+      exit();
     }
-    $stmt->close();
+  }
+  $stmt->close();
 
-    /* ================= USER LOGIN ================= */
-    $stmt = $conn->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $userResult = $stmt->get_result();
+  /* ================= USER LOGIN ================= */
+  $stmt = $conn->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
+  $stmt->bind_param("s", $email);
+  $stmt->execute();
+  $userResult = $stmt->get_result();
 
-    if ($userResult->num_rows === 1) {
-        $user = $userResult->fetch_assoc();
+  if ($userResult->num_rows === 1) {
+    $user = $userResult->fetch_assoc();
 
-        if (password_verify($password, $user['password'])) {
+    if (password_verify($password, $user['password'])) {
 
-            session_regenerate_id(true);
+      session_regenerate_id(true);
 
-            $_SESSION['user_id']    = $user['id'];
-            $_SESSION['user_name']  = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
+      $_SESSION['user_id']    = $user['id'];
+      $_SESSION['user_name']  = $user['name'];
+      $_SESSION['user_email'] = $user['email'];
 
-            header("Location: dashboard.php");
-            exit();
-        }
+      header("Location: ../student/dashboard.php");
+      exit();
     }
-    $stmt->close();
+  }
+  $stmt->close();
 
-    $message = "<div class='message-box error'>Invalid email or password.</div>";
+  $message = "<div class='message-box error'>Invalid email or password.</div>";
 }
 ?>
 <!-- HTML form stays the same -->
@@ -76,15 +76,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       color: #f9fafb;
       margin: 0;
     }
+
     .nav {
       background: #111827;
       padding: 10px 20px;
     }
+
     .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
     .brand {
       display: flex;
       align-items: center;
@@ -92,36 +95,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       color: #fff;
       font-weight: 600;
     }
+
     .brand img {
       height: 40px;
       margin-right: 10px;
     }
+
     .menu {
       list-style: none;
       display: flex;
       gap: 20px;
     }
+
     .menu a {
       text-decoration: none;
       color: #d1d5db;
     }
+
     .login-container {
       max-width: 400px;
       margin: 60px auto;
       background: #2d3748;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     }
+
     .login-form h2 {
       margin-bottom: 20px;
       text-align: center;
     }
+
     .login-form label {
       display: block;
       margin: 10px 0 6px;
       font-weight: 600;
     }
+
     .login-form input {
       width: 100%;
       padding: 10px;
@@ -131,6 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       color: #f9fafb;
       margin-bottom: 12px;
     }
+
     .login-form button {
       width: 100%;
       padding: 12px;
@@ -141,13 +152,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       font-weight: 600;
       cursor: pointer;
     }
+
     .login-form button:hover {
       background: #1d4ed8;
     }
+
     .signup-link {
       text-align: center;
       margin-top: 15px;
     }
+
     .message-box {
       position: relative;
       padding: 12px 16px;
@@ -157,11 +171,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       font-size: 15px;
       text-align: center;
     }
+
     .error {
       background-color: #f8d7da;
       color: #721c24;
       border: 1px solid #f5c6cb;
     }
+
     .close-btn {
       position: absolute;
       top: 6px;
@@ -173,15 +189,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       color: inherit;
       cursor: pointer;
     }
+
     .footer {
       background: #111827;
       color: #9ca3af;
       padding: 20px;
       text-align: center;
       margin-top: 40px;
-      display:block;
+      display: block;
       bottom: 0;
     }
+
     .footer a {
       color: #9ca3af;
       margin: 0 8px;
@@ -237,4 +255,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
   </footer>
 </body>
+
 </html>
