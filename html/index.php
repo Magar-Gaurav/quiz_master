@@ -1,15 +1,21 @@
 <?php
-// Include DB connection
 include '../connection/db.php';
 
-// Fetch top 5 players
-$query = "SELECT username, score FROM leaderboard ORDER BY score DESC LIMIT 5";
+// Fetch top 3 users by total score
+$query = "
+    SELECT u.name, SUM(qh.score) AS total_score
+    FROM users u
+    JOIN quiz_history qh ON u.id = qh.user_id
+    GROUP BY u.id
+    ORDER BY total_score DESC
+    LIMIT 3
+";
+
 $result = mysqli_query($conn, $query);
 
-// Store players in array
-$players = [];
+$topPlayers = [];
 while ($row = mysqli_fetch_assoc($result)) {
-    $players[] = $row;
+    $topPlayers[] = $row;
 }
 ?>
 <!DOCTYPE html>
@@ -108,15 +114,15 @@ while ($row = mysqli_fetch_assoc($result)) {
         </section>
 
         <!-- LeaderBoard -->
-        <section class="leaderboard" data-aos="zoom-in">
+        <section class="leaderboard" style="display: flex;flex-direction:column;justify-content:center;align-items:center;">
             <h2 class="leaderboard-title">🏆 Top Players</h2>
+            <br>
             <div class="leaderboard-grid">
-                <?php if (!empty($players)): ?>
-                    <?php foreach ($players as $index => $player): ?>
+                <?php if (!empty($topPlayers)): ?>
+                    <?php foreach ($topPlayers as $index => $player): ?>
                         <div class="leaderboard-card <?= $index == 0 ? 'first' : ($index == 1 ? 'second' : ($index == 2 ? 'third' : '')) ?>">
-                            <span class="rank"><?= $index + 1 ?></span>
-                            <h3><?= htmlspecialchars($player['username']) ?></h3>
-                            <p>Score: <?= $player['score'] ?> pts</p>
+                            <h3><?= htmlspecialchars($player['name']) ?></h3>
+                            <p>Score: <?= $player['total_score'] ?> pts</p>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -124,7 +130,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <?php endif; ?>
             </div>
         </section>
-
         <!-- Quiz Categories -->
         <section class="quiz-categories" data-aos="fade-up">
             <h2 class="categories-title">🎯 Quiz Categories</h2>
@@ -199,13 +204,11 @@ while ($row = mysqli_fetch_assoc($result)) {
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <!-- Left side: brand and tagline -->
             <div class="footer-left">
                 <strong>Quiz Master</strong>
                 <p class="tagline">Challenge your mind, have fun!</p>
             </div>
 
-            <!-- Right side: social media icons -->
             <div class="footer-right">
                 <a href="https://facebook.com" target="_blank" id="fb"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://instagram.com" target="_blank" id="insta"><i class="fab fa-instagram"></i></a>
@@ -214,15 +217,12 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
         </div>
 
-        <!-- Bottom copyright -->
         <div class="footer-bottom">
             <p>© 2025 QuizMaster. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="../js/script.js"></script>
-    <!-- AOS initialization -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 </body>
 

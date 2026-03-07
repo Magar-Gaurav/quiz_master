@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $_SESSION['admin_name'] = $admin['username'];
       $_SESSION['admin_email'] = $admin['email'];
 
-      header("Location: ../partials/admin_dashboard.php");
+      header("Location: ../partials/dashboard_home.php");
       exit();
     }
   }

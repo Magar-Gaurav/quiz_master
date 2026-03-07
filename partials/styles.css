@@ -1,0 +1,287 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+/* LAYOUT */
+.dashboard {
+    display: flex;
+    position: relative;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: #020617;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+}
+
+.logo {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid #1e293b;
+}
+
+.sidebar a {
+    padding: 14px 20px;
+    color: #94a3b8;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar a:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.sidebar .active {
+    background: #2563eb;
+    color: white;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 20px;
+}
+
+.logout {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #cf3a3a;
+    transition: 0.2s ease-in-out;
+}
+
+.logout:hover {
+    transform: translateY(-7px);
+    background: #ef4444;
+}
+
+/* WELCOME MESSAGE */
+#welcome {
+    position: absolute;
+    right: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+#space {
+    margin: 7% 0;
+}
+
+/* CONTENT */
+.content {
+    margin-left: 18%;
+    flex: 1;
+    padding: 30px;
+    position: relative;
+}
+
+/* PANELS */
+.panel {
+    background: #1e293b;
+    padding: 40px;
+    border-radius: 8px;
+    margin: 50px 100px;
+}
+
+/* STATS */
+.stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    /* allows wrapping on smaller screens */
+}
+
+.card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+    min-width: 200px;
+    /* ensures cards don’t shrink too much */
+    box-shadow: 5px 5px 5px #9b9595;
+    transition: 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    cursor: pointer;
+    box-shadow: 7px 7px 7px #9b9595;
+}
+
+.card h3 {
+    font-size: 32px;
+    color: #3b82f6;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th {
+    background: #2563eb;
+    padding: 10px;
+    color: white;
+}
+
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #334155;
+}
+
+/* FORMS */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #020617;
+    border: 1px solid #334155;
+    color: white;
+    border-radius: 10px;
+}
+
+textarea {
+    height: 80px;
+}
+
+button {
+    background: #2563eb;
+    border: none;
+    padding: 10px 14px;
+    color: white;
+    cursor: pointer;
+}
+
+.delete {
+    background: #ef4444;
+}
+
+/* OPTIONS GRID */
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* MESSAGE */
+.message {
+    background: #16a34a;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: #3498db;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.save-btn {
+    background: #2ecc71;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.edit-field {
+    padding: 5px;
+    width: 90%;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        overflow-x: auto;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    #welcome {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 15px;
+        text-align: center;
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .card h3 {
+        font-size: 24px;
+    }
+
+    table th,
+    table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
