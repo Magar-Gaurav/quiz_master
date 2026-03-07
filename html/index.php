@@ -114,7 +114,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </section>
 
         <!-- LeaderBoard -->
-        <section class="leaderboard" style="display: flex;flex-direction:column;justify-content:center;align-items:center;">
+        <section class="leaderboard" style="display: flex;flex-direction:column;justify-content:center;align-items:center;" data-aos="fade-up">
             <h2 class="leaderboard-title">🏆 Top Players</h2>
             <br>
             <div class="leaderboard-grid">

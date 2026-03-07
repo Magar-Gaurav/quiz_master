@@ -1,9 +1,9 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//     AOS.init({
-//         duration: 1000,
-//          once: false
-//     });
-// });
+document.addEventListener("DOMContentLoaded", function () {
+    AOS.init({
+        duration: 1000,
+         once: false
+    });
+});
 
 const questions = document.querySelectorAll(".faq-question");
 questions.forEach(q => {
