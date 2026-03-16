@@ -28,7 +28,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     <!-- Main stylesheet -->
     <link rel="stylesheet" href="../css/styles.css">
-
     <title>Quiz Master</title>
 
     <!-- AOS (Animate On Scroll) library for scroll animations -->
@@ -55,12 +54,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
                 <span>Quiz Master</span>
             </a>
-
-            <input type="checkbox" id="menu-toggle" class="menu-toggle">
-            <label for="menu-toggle" class="hamburger">
-                <span></span>
-            </label>
-
             <ul class="menu">
                 <li><a href="./index.php">Home</a></li>
                 <li><a href="./about.html">About</a></li>
@@ -83,7 +76,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
 
             <!-- Background image -->
-            <img src="../images/home_background.png" alt="image_section">
+            <!-- <img src="../images/home_background.png" alt="image_section"> -->
+            <img src="https://i.pinimg.com/1200x/a9/4c/0c/a94c0cc1b0f186f69baaa9fd06b9833a.jpg" alt="">
         </div>
 
         <!-- Features -->
@@ -91,22 +85,22 @@ while ($row = mysqli_fetch_assoc($result)) {
             <h2 class="features-title">Why Choose Quiz Master?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <span class="feature-icon">🧠</span>
+                    <span class="feature-icon"><i class="fa-solid fa-brain"></i></span>
                     <h3>Smart Learning</h3>
                     <p>Track your progress and improve with every quiz.</p>
                 </div>
                 <div class="feature-card">
-                    <span class="feature-icon">🌍</span>
+                    <span class="feature-icon"><i class="fa-solid fa-earth-americas"></i></span>
                     <h3>Global Competition</h3>
                     <p>Compete with friends and players worldwide.</p>
                 </div>
                 <div class="feature-card">
-                    <span class="feature-icon">📊</span>
+                    <span class="feature-icon"><i class="fa-solid fa-chart-area"></i></span>
                     <h3>Instant Feedback</h3>
                     <p>Get results and explanations right after each question.</p>
                 </div>
                 <div class="feature-card">
-                    <span class="feature-icon">🎨</span>
+                    <span class="feature-icon"><i class="fa-solid fa-palette"></i></span>
                     <h3>Fun & Interactive</h3>
                     <p>Engaging visuals, animations, and responsive layouts.</p>
                 </div>
@@ -135,22 +129,22 @@ while ($row = mysqli_fetch_assoc($result)) {
             <h2 class="categories-title">🎯 Quiz Categories</h2>
             <div class="categories-grid">
                 <div class="category-card">
-                    <span class="category-icon">🧪</span>
+                    <span class="category-icon"><i class="fa-solid fa-flask-vial"></i></span>
                     <h3>Science</h3>
                     <p>Explore physics, chemistry, biology, and more.</p>
                 </div>
                 <div class="category-card">
-                    <span class="category-icon">📜</span>
+                    <span class="category-icon"><i class="fa-solid fa-clipboard"></i></span>
                     <h3>History</h3>
                     <p>Test your knowledge of world events and leaders.</p>
                 </div>
                 <div class="category-card">
-                    <span class="category-icon">🎬</span>
+                    <span class="category-icon"><i class="fa-solid fa-clapperboard"></i></span>
                     <h3>Pop Culture</h3>
                     <p>Movies, music, celebrities, and trending topics.</p>
                 </div>
                 <div class="category-card">
-                    <span class="category-icon">🧠</span>
+                    <span class="category-icon"><i class="fa-solid fa-brain"></i></span>
                     <h3>Logic & Riddles</h3>
                     <p>Challenge your brain with puzzles and riddles.</p>
                 </div>

@@ -78,11 +78,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     .nav {
-      background: #111827;
-      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: #050d1b;
+
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
     .nav-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -91,25 +99,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     .brand {
       display: flex;
       align-items: center;
+      gap: 10px;
       text-decoration: none;
-      color: #fff;
+      color: white;
+      font-size: 20px;
       font-weight: 600;
     }
 
-    .brand img {
-      height: 40px;
-      margin-right: 10px;
+    .logo-img {
+      width: 3vw;
     }
 
     .menu {
       list-style: none;
       display: flex;
-      gap: 20px;
+      gap: 25px;
+      align-items: center;
     }
 
     .menu a {
+      color: white;
       text-decoration: none;
-      color: #d1d5db;
+      font-size: 15px;
+      transition: .3s;
+    }
+
+    .nav-btn {
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      background-color: #cd0a4b;
+      box-shadow: 0 8px 0 #0005, 0 6px 0 #cd0a4b;
+      transition: 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(2px);
+        box-shadow: 0 6px 0 #0005, 0 4px 0 #cd0a4b;
+      }
     }
 
     .login-container {
@@ -119,6 +146,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    .login-form{
+      display:flex;
+      flex-direction: column;
+      justify-content: center;
+      gap:1.02rem;
+      margin: 0 20px 0 15px;
     }
 
     .login-form h2 {
@@ -134,32 +169,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     .login-form input {
       width: 100%;
+      max-width: 360px;
       padding: 10px;
-      border: 1px solid #444;
       border-radius: 6px;
       background: #374151;
       color: #f9fafb;
       margin-bottom: 12px;
+      outline: none;
+      border: none;
     }
 
     .login-form button {
-      width: 100%;
+      width: 70%;
       padding: 12px;
-      background: #2563eb;
+      margin-left: 15%;
       border: none;
       border-radius: 6px;
       color: #fff;
       font-weight: 600;
       cursor: pointer;
+      background-color: #cd0a4b;
+      box-shadow: 0 8px 0 #0005, 0 6px 0 #cd0a4b;
+      transition: 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(2px);
+        box-shadow: 0 6px 0 #0005, 0 4px 0 #cd0a4b;
+      }
     }
 
-    .login-form button:hover {
-      background: #1d4ed8;
-    }
 
     .signup-link {
       text-align: center;
       margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: teal;
     }
 
     .message-box {
@@ -191,19 +239,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     .footer {
-      background: #111827;
-      color: #9ca3af;
-      padding: 20px;
-      text-align: center;
-      margin-top: 40px;
-      display: block;
-      bottom: 0;
+      background: #050d1b;
+      padding: 20px 20px;
+      margin-top: 60px;
     }
 
-    .footer a {
-      color: #9ca3af;
-      margin: 0 8px;
-      text-decoration: none;
+    .footer-left {
+      font-size: 20px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-right a {
+      margin-left: 10px;
+      font-size: 25px;
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 20px;
+      opacity: .8;
+    }
+
+    #fb:hover {
+      color: #1877F2;
+      /* text-shadow: 0 0 8px #1877F2, 0 0 16px rgba(24, 119, 242, 0.6); */
+    }
+
+    #insta:hover {
+      background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #FCAF45);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      /* text-shadow: 0 0 6px #833AB4, 0 0 12px #FD1D1D, 0 0 18px #FCAF45; */
+    }
+
+    #twitter:hover {
+      color: #1DA1F2;
+      /* text-shadow: 0 0 8px #1DA1F2; */
+      transform: scale(1.2);
+    }
+
+    #linkedin:hover {
+      color: #0A66C2;
+      /* text-shadow: 0 0 8px #0A66C2; */
+      transform: scale(1.2);
     }
   </style>
 </head>
@@ -216,12 +302,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <span>Quiz Master</span>
       </a>
       <ul class="menu">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="./index.php">Home</a></li>
         <li><a href="./about.html">About</a></li>
         <li><a href="./contact.html">Contact</a></li>
+        <button class="nav-btn"><a href="./login.php" class="btn">Login</a></button>
       </ul>
     </div>
   </header>
+
 
   <main>
     <div class="login-container">
@@ -246,14 +334,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   </main>
 
   <footer class="footer">
-    <p>© 2025 QuizMaster. All rights reserved.</p>
-    <div>
-      <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-      <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-    </div>
-  </footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <strong>Quiz Master</strong>
+                <p class="tagline">Challenge your mind, have fun!</p>
+            </div>
+
+            <div class="footer-right">
+                <a href="https://facebook.com" target="_blank" id="fb"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" id="insta"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank" id="twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank" id="linkedin"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 QuizMaster. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

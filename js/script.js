@@ -1,26 +1,29 @@
-document.addEventListener("DOMContentLoaded", function () {
-    AOS.init({
-        duration: 1000,
-         once: false
-    });
+document.addEventListener("DOMContentLoaded", () => {
+
+AOS.init({
+duration:1000,
+once:false
 });
 
-const questions = document.querySelectorAll(".faq-question");
-questions.forEach(q => {
-    q.addEventListener("click", () => {
-        const answer = q.nextElementSibling;
-        const arrow = q.querySelector(".arrow");
+const questions=document.querySelectorAll(".faq-question");
 
-        const isOpen = answer.style.maxHeight;
+questions.forEach(q=>{
+q.addEventListener("click",()=>{
 
-        // Close all
-        document.querySelectorAll(".faq-answer").forEach(a => a.style.maxHeight = null);
-        document.querySelectorAll(".arrow").forEach(ar => ar.style.transform = "rotate(0deg)");
+const answer=q.nextElementSibling;
+const arrow=q.querySelector(".arrow");
 
-        // Toggle current
-        if (!isOpen) {
-            answer.style.maxHeight = answer.scrollHeight + "px";
-            arrow.style.transform = "rotate(180deg)";
-        }
-    });
+const isOpen=answer.style.maxHeight;
+
+document.querySelectorAll(".faq-answer").forEach(a=>a.style.maxHeight=null);
+document.querySelectorAll(".arrow").forEach(ar=>ar.style.transform="rotate(0deg)");
+
+if(!isOpen){
+answer.style.maxHeight=answer.scrollHeight+"px";
+arrow.style.transform="rotate(180deg)";
+}
+
+});
+});
+
 });

@@ -147,7 +147,7 @@ $history = $conn->query("SELECT q.title, h.score, h.attempted_at
         <a href="?section=quizzes" class="<?= $section === 'quizzes' ? 'active' : '' ?>"><i class="fa-solid fa-book-open"></i><span>Solve Quiz</span></a>
         <a href="?section=history" class="<?= $section === 'history' ? 'active' : '' ?>"><i class="fa-solid fa-clock-rotate-left"></i><span>Quiz History</span></a>
     </nav>
-    <a href="../logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    <a href="../html/login.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
 </div>
 
 <div class="content">

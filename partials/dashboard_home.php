@@ -192,7 +192,7 @@ $users = $conn->query("SELECT * FROM users");
 
             <div class="sidebar-bottom">
 
-                <form action="../html/logout.php" method="post">
+                <form action="../html/login.php" method="post">
 
                     <button class="logout">Logout</button>
 
