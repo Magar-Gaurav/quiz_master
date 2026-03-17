@@ -86,26 +86,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body>
-  <header class="nav">
+    <header class="nav">
     <div class="nav-inner">
-
-      <!-- Brand -->
       <a href="./index.php" class="brand">
         <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
         <span>Quiz Master</span>
       </a>
-
-      <!-- Hamburger -->
-      <input type="checkbox" id="menu-toggle" class="menu-toggle">
-      <label for="menu-toggle" class="hamburger">
-        <span></span>
-      </label>
-
-      <!-- Menu -->
       <ul class="menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="./about.html">About</a></li>
-        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./index.php" id="links">Home</a></li>
+        <li><a href="./about.html" id="links">About</a></li>
+        <li><a href="./contact.html" id="links">Contact</a></li>
+        <button class="nav-btn"><a href="./login.php" class="btn">Login</a></button>
       </ul>
     </div>
   </header>
@@ -139,6 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <strong>Quiz Master</strong>
         <p class="tagline">Challenge your mind, have fun!</p>
       </div>
+
       <div class="footer-right">
         <a href="https://facebook.com" target="_blank" id="fb"><i class="fab fa-facebook-f"></i></a>
         <a href="https://instagram.com" target="_blank" id="insta"><i class="fab fa-instagram"></i></a>
@@ -146,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <a href="https://linkedin.com" target="_blank" id="linkedin"><i class="fab fa-linkedin-in"></i></a>
       </div>
     </div>
-    <!-- New copyright section -->
+
     <div class="footer-bottom">
       <p>© 2025 QuizMaster. All rights reserved.</p>
     </div>

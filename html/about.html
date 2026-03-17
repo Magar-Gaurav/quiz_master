@@ -11,257 +11,26 @@
   <!-- google fonts -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-  <style>
-    /* Reset */
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0a1f44; /* dark navy background */
-      color: #fff;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    /* Navbar */
-    .nav {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(180deg, rgba(8, 10, 14, .55), rgba(8, 10, 14, .35));
-      padding: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, .12);
-      backdrop-filter: blur(12px);
-      z-index: 10;
-    }
-
-    .nav-inner {
-      max-width: 1600px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.3rem;
-      font-weight: 700;
-      text-shadow: 2px 2px 2px grey;
-    }
-
-    .logo-img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-    }
-
-    .menu {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .menu a {
-      text-decoration: none;
-      padding: .5rem .75rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
-      transition: .2s;
-    }
-
-    .menu a:hover,
-    .menu a.active {
-      color: #cce7ff; /* light blue accent */
-      text-shadow: 0 0 10px #cce7ff;
-    }
-
-    .nav-btn .btn {
-      background: #fff;
-      color: #0a1f44;
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    /* Hamburger (hidden for now) */
-    .menu-toggle,
-    .hamburger {
-      display: none;
-    }
-/* About Section */
-.about-section {
-  display: flex;
-  justify-content: center;
-  padding: 40px 20px;
-  background-color: #0a1f44; /* navy background for the whole section */
-}
-
-.about-container {
-  max-width: 800px;
-  background: #ffffff;        /* white background for the content box */
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  color: #000000;             /* black text inside */
-}
-
-.about-container h1 {
-  color: #0f52ba;             /* deep blue highlight for main heading */
-  margin-bottom: 20px;
-  font-size: 2rem;
-}
-
-.about-container h2 {
-  margin-top: 30px;
-  color: #1e90ff;             /* lighter blue highlight for subtopics */
-  font-size: 1.5rem;
-}
-
-.about-container p,
-.about-container li {
-  color: #000000;             /* black text for readability */
-  line-height: 1.6;
-}
-
-.about-container ul {
-  margin: 15px 0;
-  padding-left: 20px;
-}
-
-.about-container li {
-  margin-bottom: 8px;
-}
-
-
-    /* Footer */
-    .footer {
-      background: linear-gradient(135deg, #0d1b2a, #1b263b);
-      color: #e0e0e0;
-      padding: 20px 40px;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .footer-left strong {
-      font-size: 1.8rem;
-      color: #cce7ff;
-      text-shadow: 0 0 8px #cce7ff;
-      letter-spacing: 1px;
-    }
-
-    .footer-left .tagline {
-      font-size: 0.9rem;
-      color: #9aa5b1;
-      margin-top: 5px;
-      font-style: italic;
-    }
-
-    .footer-right {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .footer-right a {
-      text-decoration: none;
-      margin: 5px 10px;
-      color: #e0e0e0;
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .footer-right a:hover {
-      transform: scale(1.2);
-      color: #cce7ff;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 0.85rem;
-      color: #b6c3d1;
-      border-top: 2px solid rgba(255, 255, 255, 0.1);
-      padding-top: 10px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .about-container {
-        padding: 20px;
-      }
-      .footer-content {
-        flex-direction: column;
-        text-align: center;
-      }
-      .footer-left strong {
-        font-size: 1.5rem;
-      }
-      .footer-right a {
-        font-size: 1.3rem;
-        margin: 8px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .about-container {
-        padding: 15px;
-      }
-      .about-container h1 {
-        font-size: 24px;
-      }
-      .about-container h2 {
-        font-size: 18px;
-      }
-      .footer {
-        padding: 15px 20px;
-      }
-      .footer-left strong {
-        font-size: 1.3rem;
-      }
-      .footer-left .tagline {
-        font-size: 0.8rem;
-      }
-      .footer-right a {
-        font-size: 1.2rem;
-        margin: 6px;
-      }
-    }
-  </style>
-</head>
+  <link rel="stylesheet" href="../css/about.css">
+  </head>
 
 <body>
   <!-- Navbar -->
-  <header class="nav">
-    <div class="nav-inner">
-      <a href="./index.php" class="brand">
-        <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
-        <span>Quiz Master</span>
-      </a>
-      <ul class="menu">
-        <li><a href="./index.php">Home</a></li>
-        <li><a href="./about.html" class="active">About</a></li>
-        <li><a href="./contact.html">Contact</a></li>
-        <li class="nav-btn"><a href="./login.php" class="btn">Login</a></li>
-      </ul>
-    </div>
-  </header>
+      <header class="nav">
+        <div class="nav-inner">
+            <a href="./index.php" class="brand">
+                <img src="../images/download.png" alt="Quiz Master Logo" class="logo-img">
+                <span>Quiz Master</span>
+            </a>
+            <ul class="menu">
+                <li><a href="./index.php" id="links">Home</a></li>
+                <li><a href="./about.html" id="links">About</a></li>
+                <li><a href="./contact.html" id="links">Contact</a></li>
+                <button class="nav-btn"><a href="./login.php" class="btn">Login</a></button>
+            </ul>
+        </div>
+    </header>
+
 
   <!-- About Section -->
   <main class="about-section">
@@ -299,22 +68,25 @@
   </main>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-left">
-        <strong>Quiz Master</strong>
-        <p class="tagline">Challenge your mind, have fun!</p>
-      </div>
-      <div class="footer-right">
-        <a href="https://facebook.com" target="_blank" id="fb"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://instagram.com" target="_blank" id="insta"><i class="fab fa-instagram"></i></a>
-        <a href="https://twitter.com" target="_blank" id="twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://linkedin.com" target="_blank" id="linkedin"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 Quiz Master. All rights reserved.</p>
-    </div>
-  </footer>
+ <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <strong>Quiz Master</strong>
+                <p class="tagline">Challenge your mind, have fun!</p>
+            </div>
+
+            <div class="footer-right">
+                <a href="https://facebook.com" target="_blank" id="fb"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" id="insta"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank" id="twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank" id="linkedin"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 QuizMaster. All rights reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>

@@ -63,6 +63,9 @@ body {
     transition: .3s;
 }
 
+#links:hover{
+    color: rgb(138, 138, 239);
+}
 .nav-btn {
     border: none;
     padding: 8px 18px;
@@ -344,6 +347,21 @@ body {
     font-size: 20px;
 }
 
+.footer-left strong {
+    font-size: 1.8rem;
+    color: #cce7ff;
+    text-shadow: 0 0 8px #cce7ff;
+    letter-spacing: 1px;
+}
+
+.footer-left .tagline {
+    font-size: 0.9rem;
+    color: #9aa5b1;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+
 .footer-content {
     max-width: 1200px;
     margin: auto;
@@ -405,26 +423,29 @@ body {
 
 }
 
+/* Social Hover Colors */
+#fb, #insta, #twitter, #linkedin{
+    transition: 0.5s ease-in-out;
+}
+
 #fb:hover {
+    transform: scale(1.2);
     color: #1877F2;
-    /* text-shadow: 0 0 8px #1877F2, 0 0 16px rgba(24, 119, 242, 0.6); */
 }
 
 #insta:hover {
     background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #FCAF45);
     -webkit-background-clip: text;
+    transform: scale(1.2);
     -webkit-text-fill-color: transparent;
-    /* text-shadow: 0 0 6px #833AB4, 0 0 12px #FD1D1D, 0 0 18px #FCAF45; */
 }
 
 #twitter:hover {
     color: #1DA1F2;
-    /* text-shadow: 0 0 8px #1DA1F2; */
     transform: scale(1.2);
 }
 
 #linkedin:hover {
     color: #0A66C2;
-    /* text-shadow: 0 0 8px #0A66C2; */
     transform: scale(1.2);
 }

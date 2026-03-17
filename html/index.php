@@ -55,9 +55,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <span>Quiz Master</span>
             </a>
             <ul class="menu">
-                <li><a href="./index.php">Home</a></li>
-                <li><a href="./about.html">About</a></li>
-                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./index.php" id="links">Home</a></li>
+                <li><a href="./about.html" id="links">About</a></li>
+                <li><a href="./contact.html" id="links">Contact</a></li>
                 <button class="nav-btn"><a href="./login.php" class="btn">Login</a></button>
             </ul>
         </div>
