@@ -41,19 +41,21 @@ if (isset($_POST['add_quiz'])) {
     $stmt->execute();
 
     $message = "Quiz added";
-}
-
-if (isset($_POST['delete_quiz'])) {
-
+}if (isset($_POST['delete_quiz'])) {
     $id = $_POST['quiz_id'];
 
+    // Delete quiz history first
+    $stmt = $conn->prepare("DELETE FROM quiz_history WHERE quiz_id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    // Then delete the quiz
     $stmt = $conn->prepare("DELETE FROM quizzes WHERE id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
     $message = "Quiz deleted";
 }
-
 /* ================= ADD QUESTION ================= */
 
 if (isset($_POST['add_question'])) {
@@ -206,7 +208,7 @@ $users = $conn->query("SELECT * FROM users");
 
         <div class="content">
 
-            <h2>Welcome Administrator</h2>
+            <h1>Welcome Administrator</h1>
 
             <?php if ($message != "") { ?>
 
@@ -217,7 +219,7 @@ $users = $conn->query("SELECT * FROM users");
             <!-- OVERVIEW -->
 
             <?php if ($section == "overview") { ?>
-
+                <h2 style="margin-bottom: 1.2rem;">Dashboard</h2>
                 <div class="stats">
 
                     <div class="card">
@@ -527,7 +529,7 @@ WHERE question_id={$row['id']} AND is_correct=1
 
                     <input type="password" name="password" required>
 
-                    <button name="update_profile">Update Profile</button>
+                    <button name="update_profile" id="update">Update Profile</button>
 
                 </form>
 

@@ -120,10 +120,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <input type="password" name="password" placeholder="Enter password" required />
 
         <button type="submit">Sign Up</button>
-        <p class="login-link">Already have an account? <a href="login.php">Login</a></p>
+        <p class="login-link">Already have an account? <a href="./login.php">Login</a></p>
       </form>
     </div>
   </main>
+  
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-left">
@@ -143,6 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <p>© 2025 QuizMaster. All rights reserved.</p>
     </div>
   </footer>
+
 </body>
 
 </html>

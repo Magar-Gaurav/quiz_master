@@ -1,287 +1,307 @@
-body {
-    font-family: Arial;
+/* ================= BASE RESET ================= */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: #0f172a;
     color: #e2e8f0;
+    min-height: 100vh;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
-/* LAYOUT */
-.dashboard {
+/* ================= TOPBAR ================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    right: 0;
+    height: 70px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
     display: flex;
-    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 1000;
 }
 
-/* SIDEBAR */
+.topbar h1 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #f1f5f9;
+    margin-bottom: 5px; /* add spacing below */
+}
+
+.topbar .profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.topbar .profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #93e093;
+    transition: all 0.3s ease;
+}
+
+.topbar .profile img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+/* ================= SIDEBAR ================= */
 .sidebar {
-    width: 240px;
+    width: 250px;
     background: #020617;
     height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
-    position: fixed;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.logo {
-    text-align: center;
-    padding: 20px;
-    border-bottom: 1px solid #1e293b;
+.sidebar h2{
+    margin-bottom: 2rem;
+}
+
+.sidebar nav {
+    margin-top: 60px;
 }
 
 .sidebar a {
-    padding: 14px 20px;
-    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 8px;
     text-decoration: none;
-    display: block;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.2s ease;
 }
 
-.sidebar a:hover {
-    background: #3b82f6;
-    color: white;
+.sidebar a:not(.logout):hover {
+    background: rgba(59, 130, 246, 0.12);
+    color: #fff;
+    cursor: pointer;
 }
 
-.sidebar .active {
-    background: #2563eb;
-    color: white;
+.sidebar a.active {
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    color: #fff;
+    font-weight: 500;
 }
 
+/* ================= LOGOUT ================= */
 .sidebar-bottom {
     margin-top: auto;
+}
+
+.logout{
+    width: 200px;
+}
+.logout,
+button,
+.edit-btn,
+.save-btn,
+.delete-btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    background-color: #cd0a4b;
+    box-shadow: 0 8px 0 #0005, 0 6px 0 #cd0a4b;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+}
+
+.logout:hover,
+button:hover,
+.edit-btn:hover,
+.save-btn:hover,
+.delete-btn:hover {
+    transform: translateY(2px);
+    box-shadow: 0 6px 0 #0005, 0 4px 0 #cd0a4b;
+}
+
+/* ================= CONTENT ================= */
+.content {
+    margin-left: 250px;
+    padding: 40px 10px 40px 50px;
+    max-width: 1200px;
+    cursor: pointer;
+}
+
+.content h1{
+    text-align: right;
+    margin-bottom: 2rem;
+}
+
+.stats{
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+#welcome {
+    margin-bottom: 25px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.card{
+    width: 500px;
+    padding: 1rem 2rem;
+}
+
+.panel{
     padding: 20px;
 }
-
-.logout {
-    width: 100%;
-    border: none;
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-    border-radius: 10px;
-    background: #cf3a3a;
-    transition: 0.2s ease-in-out;
-}
-
-.logout:hover {
-    transform: translateY(-7px);
-    background: #ef4444;
-}
-
-/* WELCOME MESSAGE */
-#welcome {
-    position: absolute;
-    right: 20px;
-    color: white;
-    font-weight: bold;
-}
-
-#space {
-    margin: 7% 0;
-}
-
-/* CONTENT */
-.content {
-    margin-left: 18%;
-    flex: 1;
-    padding: 30px;
-    position: relative;
-}
-
-/* PANELS */
-.panel {
-    background: #1e293b;
-    padding: 40px;
-    border-radius: 8px;
-    margin: 50px 100px;
-}
-
-/* STATS */
-.stats {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    /* allows wrapping on smaller screens */
-}
-
+/* ================= CARDS / PANELS ================= */
+.panel,
 .card {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 8px;
-    flex: 1;
-    text-align: center;
-    min-width: 200px;
-    /* ensures cards don’t shrink too much */
-    box-shadow: 5px 5px 5px #9b9595;
-    transition: 0.3s ease-in-out;
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    transition: transform 0.25s ease;
 }
 
+.panel:hover,
 .card:hover {
-    transform: translateY(-10px);
-    cursor: pointer;
-    box-shadow: 7px 7px 7px #9b9595;
+    transform: translateY(-2px);
 }
 
+/* Card headings spacing */
 .card h3 {
-    font-size: 32px;
-    color: #3b82f6;
+    font-size: 24px;
+    color: #60a5fa;
+    font-weight: 500;
+    margin-bottom: 12px;
 }
 
-/* TABLE */
-table {
+/* ================= TABLE ================= */
+table,
+.users-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 18px;
 }
 
-table th {
+table th,
+.users-table th {
     background: #2563eb;
-    padding: 10px;
-    color: white;
+    color: #fff;
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
 }
 
-table td {
-    padding: 10px;
-    border-bottom: 1px solid #334155;
+table td,
+.users-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-weight: 400;
 }
 
-/* FORMS */
+/* Add left padding to all table text */
+table td,
+.users-table td {
+    padding-left: 20px;
+}
+
+table tr:hover,
+.users-table tr:hover {
+    background: rgba(59, 130, 246, 0.06);
+}
+
+/* ================= FORMS ================= */
 input,
 select,
 textarea {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    background: #020617;
+    padding: 10px 12px;
+    margin: 8px 0;
+    background: #0f172a;
     border: 1px solid #334155;
-    color: white;
-    border-radius: 10px;
+    border-radius: 6px;
+    color: #e2e8f0;
+    outline: none;
+    font-weight: 400;
+    transition: all 0.25s ease;
 }
 
-textarea {
-    height: 80px;
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
 }
 
-button {
-    background: #2563eb;
-    border: none;
-    padding: 10px 14px;
-    color: white;
-    cursor: pointer;
+#update{
+    align-self: center;
 }
-
-.delete {
-    background: #ef4444;
-}
-
-/* OPTIONS GRID */
-.options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* MESSAGE */
+/* ================= MESSAGES ================= */
 .message {
-    background: #16a34a;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 400;
+    background:green;
 }
 
-.users-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.message.success {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.35);
 }
 
-.users-table th,
-.users-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+.message.error {
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
-.action-buttons {
-    display: flex;
-    gap: 8px;
+/* ================= RESPONSIVE ================= */
+@media(max-width: 1024px) {
+    .sidebar { width: 200px; }
+    .content { margin-left: 200px; }
 }
 
-.edit-btn {
-    background: #3498db;
-    border: none;
-    color: white;
-    padding: 6px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.save-btn {
-    background: #2ecc71;
-    border: none;
-    color: white;
-    padding: 6px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.delete-btn {
-    background: #e74c3c;
-    border: none;
-    color: white;
-    padding: 6px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.edit-field {
-    padding: 5px;
-    width: 90%;
-}
-
-/* RESPONSIVE DESIGN */
-@media (max-width: 1024px) {
-    .sidebar {
-        width: 200px;
-    }
-
-    .content {
-        margin-left: 200px;
-    }
-}
-
-@media (max-width: 768px) {
+@media(max-width: 768px) {
     .sidebar {
         position: relative;
         width: 100%;
         height: auto;
         overflow-x: auto;
     }
-
-    .content {
-        margin-left: 0;
-        padding: 20px;
-    }
-
-    #welcome {
-        position: relative;
-        top: auto;
-        right: auto;
-        margin-bottom: 15px;
-        text-align: center;
-        display: block;
-    }
+    .content { margin-left: 0; padding: 20px; }
+    .topbar { left: 0; }
 }
 
-@media (max-width: 480px) {
-    .card h3 {
-        font-size: 24px;
-    }
-
-    table th,
-    table td {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    button {
-        width: 100%;
-    }
+@media(max-width: 480px) {
+    .card h3 { font-size: 20px; }
+    table th, table td { font-size: 13px; padding: 6px 10px; }
+    button { width: 100%; }
 }
