@@ -1,25 +1,25 @@
 <?php
+
 session_start();
 include '../connection/db.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../html/login.php");
-    exit;
+$message = "";
+
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']); 
 }
 
 $userId = $_SESSION['user_id'];
-$message = "";
 $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
 $selectedQuizId = isset($_GET['quiz_id']) ? intval($_GET['quiz_id']) : null;
 
-/* ================= FETCH USER ================= */
 $stmt = $conn->prepare("SELECT id, name, email, profile_pic, password FROM users WHERE id=?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-/* ================= PROFILE IMAGE HANDLING ================= */
 $profileImage = "../images/default_profile.avif";
 
 if (!empty($user['profile_pic'])) {
@@ -30,7 +30,6 @@ if (!empty($user['profile_pic'])) {
     }
 }
 
-/* ================= HANDLE PROFILE UPDATE ================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_profile') {
 
     $name  = trim($_POST['name']);
@@ -39,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $newPassword     = $_POST['new_password'] ?? '';
     $profilePic = $user['profile_pic'];
 
-    /* -------- Handle Image Upload -------- */
     if (!empty($_FILES['profile_pic']['name'])) {
 
         $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -58,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
     }
 
-    /* -------- Password Logic -------- */
     $updatePassword = false;
     $hashedPassword = null;
 
@@ -73,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
     }
 
-    /* -------- Update Database -------- */
     if (empty($message)) {
         if ($updatePassword) {
             $stmt = $conn->prepare("UPDATE users SET name=?, email=?, profile_pic=?, password=? WHERE id=?");
@@ -86,12 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         if ($stmt->execute()) {
             $message = "<div class='message success'>Profile updated successfully!</div>";
 
-            // update local user data
             $user['name'] = $name;
             $user['email'] = $email;
             $user['profile_pic'] = $profilePic;
 
-            // refresh profile image
             $profileImage = !empty($profilePic) && file_exists("../uploads/" . $profilePic)
                 ? "../uploads/" . $profilePic
                 : "../assets/images/default-avatar.png";
@@ -102,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-/* ================= HANDLE QUIZ SUBMISSION ================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quiz_id'])) {
 
     $quizId = intval($_POST['quiz_id']);
@@ -118,15 +111,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quiz_id'])) {
     $total = count($questionIds);
 
     foreach ($questionIds as $qid) {
-        $selected = isset($_POST['answer'][$qid]) ? intval($_POST['answer'][$qid]) : null;
 
-        if ($selected) {
-            $check = $conn->query("SELECT is_correct FROM options WHERE id=$selected AND question_id=$qid");
-            if ($check && $check->num_rows > 0) {
-                $row = $check->fetch_assoc();
-                if ($row['is_correct'] == 1) $score++;
+        $selected = isset($_POST['answer'][$qid]) ? intval($_POST['answer'][$qid]) : 0;
+
+        if ($selected > 0) {
+
+            $correctQuery = $conn->query("SELECT id FROM options WHERE question_id=$qid AND is_correct=1");
+
+            if ($correctQuery && $correctQuery->num_rows > 0) {
+                $correct = $correctQuery->fetch_assoc();
+
+                if ($selected == $correct['id']) {
+                    $score++;
+                }
             }
         }
+    }
+
+    if ($score > $total) {
+        $score = $total;
     }
 
     $stmt = $conn->prepare("INSERT INTO quiz_history (user_id, quiz_id, score, attempted_at) VALUES (?, ?, ?, NOW())");
@@ -134,12 +137,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quiz_id'])) {
     $stmt->execute();
     $stmt->close();
 
-    $message = "<div class='message success'>You scored $score out of $total!</div>";
-    $section = "quizzes";
-    $selectedQuizId = $quizId;
+    if ($score == $total) {
+    $_SESSION['message'] = "<div class='message success'> Perfect! $score / $total</div>";
+} elseif ($score >= $total / 2) {
+    $_SESSION['message'] = "<div class='message success'> Good job! $score / $total</div>";
+} else {
+    $_SESSION['message'] = "<div class='message error'> Keep practicing! $score / $total</div>";
 }
 
-/* ================= FETCH DATA ================= */
+    header("Location: ?section=quizzes&quiz_id=$quizId");
+    exit;
+}
+
 $quizzes = $conn->query("SELECT id, title FROM quizzes ORDER BY id DESC");
 $history = $conn->query("SELECT q.title, h.score, h.attempted_at 
                          FROM quiz_history h 

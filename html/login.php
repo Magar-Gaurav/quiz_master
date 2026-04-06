@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $email = trim(strtolower($_POST['email']));
   $password = $_POST['password'];
 
-  /* ================= ADMIN LOGIN ================= */
   $stmt = $conn->prepare("SELECT id, username, email, password FROM admins WHERE email = ?");
   $stmt->bind_param("s", $email);
   $stmt->execute();
@@ -32,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
   $stmt->close();
 
-  /* ================= USER LOGIN ================= */
   $stmt = $conn->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
   $stmt->bind_param("s", $email);
   $stmt->execute();
@@ -58,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $message = "<div class='message-box error'>Invalid email or password.</div>";
 }
 ?>
-<!-- HTML form stays the same -->
 
 <!DOCTYPE html>
 <html lang="en">

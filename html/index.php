@@ -1,9 +1,8 @@
 <?php
 include '../connection/db.php';
 
-// Fetch top 3 users by total score
 $query = "
-    SELECT u.name, SUM(qh.score) AS total_score
+    SELECT u.name, u.profile_pic, SUM(qh.score) AS total_score
     FROM users u
     JOIN quiz_history qh ON u.id = qh.user_id
     GROUP BY u.id
@@ -17,31 +16,40 @@ $topPlayers = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $topPlayers[] = $row;
 }
+
+function getProfileImage($image)
+{
+    $default = "../images/default_profile.avif";
+
+    if (empty($image)) {
+        return $default;
+    }
+
+    if (file_exists($image)) {
+        return $image;
+    }
+
+    return $default;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <!-- Ensures proper scaling on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Main stylesheet -->
     <link rel="stylesheet" href="../css/styles.css">
     <title>Quiz Master</title>
 
-    <!-- AOS (Animate On Scroll) library for scroll animations -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../images/download.png">
 
-    <!-- Font Awesome CDN for social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Google Fonts: Material Symbols for icons -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_right_alt" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -63,10 +71,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
     </header>
 
-    <!-- Hero Section -->
     <main class="hero_section">
         <div class="image_section">
-            <!-- CTA -->
             <div class="cta_section">
                 <h1>Challenge Your Mind</h1>
                 <p>Compete & Grow Smarter.</p>
@@ -75,12 +81,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </a>
             </div>
 
-            <!-- Background image -->
-            <!-- <img src="../images/home_background.png" alt="image_section"> -->
             <img src="https://i.pinimg.com/1200x/a9/4c/0c/a94c0cc1b0f186f69baaa9fd06b9833a.jpg" alt="">
         </div>
 
-        <!-- Features -->
         <section class="features" data-aos="fade-up">
             <h2 class="features-title">Why Choose Quiz Master?</h2>
             <div class="features-grid">
@@ -107,24 +110,42 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
         </section>
 
-        <!-- LeaderBoard -->
-        <section class="leaderboard" style="display: flex;flex-direction:column;justify-content:center;align-items:center;" data-aos="fade-up">
-            <h2 class="leaderboard-title">🏆 Top Players</h2>
-            <br>
-            <div class="leaderboard-grid">
-                <?php if (!empty($topPlayers)): ?>
-                    <?php foreach ($topPlayers as $index => $player): ?>
-                        <div class="leaderboard-card <?= $index == 0 ? 'first' : ($index == 1 ? 'second' : ($index == 2 ? 'third' : '')) ?>">
-                            <h3><?= htmlspecialchars($player['name']) ?></h3>
-                            <p>Score: <?= $player['total_score'] ?> pts</p>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="no-leaderboard">No leaderboard yet — be the first to play!</p>
-                <?php endif; ?>
-            </div>
-        </section>
-        <!-- Quiz Categories -->
+        <div class="leaderboard-stage">
+
+            <?php if (isset($topPlayers[0])): ?>
+                <div class="podium second">
+                    <div class="player-card">
+                        <img src="<?php echo getProfileImage($topPlayers[1]['profile_image'] ?? ''); ?>" alt="">
+
+                        <h3><?php echo $topPlayers[1]['name']; ?></h3>
+                        <p><?php echo $topPlayers[1]['total_score']; ?> pts</p>
+                    </div>
+                    <div class="block">2</div>
+                </div>
+            <?php endif; ?>
+            <?php if (isset($topPlayers[0])): ?>
+                <div class="podium first">
+                    <div class="player-card">
+                        <img src="<?php echo getProfileImage($topPlayers[0]['profile_image'] ?? ''); ?>" alt="">
+                        <h3><?php echo $topPlayers[0]['name']; ?></h3>
+                        <p><?php echo $topPlayers[0]['total_score']; ?> pts</p>
+                    </div>
+                    <div class="block">1</div>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($topPlayers[2])): ?>
+                <div class="podium third">
+                    <div class="player-card">
+                        <img src="<?php echo getProfileImage($topPlayers[2]['profile_image'] ?? ''); ?>" alt="">
+                        <h3><?php echo $topPlayers[2]['name']; ?></h3>
+                        <p><?php echo $topPlayers[2]['total_score']; ?> pts</p>
+                    </div>
+                    <div class="block">3</div>
+                </div>
+            <?php endif; ?>
+
+        </div>
         <section class="quiz-categories" data-aos="fade-up">
             <h2 class="categories-title">🎯 Quiz Categories</h2>
             <div class="categories-grid">
@@ -151,7 +172,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
         </section>
 
-        <!-- FAQs -->
         <section class="faq" data-aos="fade-up">
             <h2 class="faq-title">❓ Frequently Asked Questions</h2>
             <div class="faq-item">
@@ -195,7 +215,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-left">

@@ -176,6 +176,7 @@ main {
 }
 
 .login-form button {
+    color: white;
     border: none;
     padding: 0.8rem;
     border-radius: 6px;

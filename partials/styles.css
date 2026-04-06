@@ -1,4 +1,3 @@
-/* ================= BASE RESET ================= */
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +13,6 @@ body {
     line-height: 1.5;
 }
 
-/* ================= TOPBAR ================= */
 .topbar {
     position: fixed;
     top: 0;
@@ -59,7 +57,6 @@ body {
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
-/* ================= SIDEBAR ================= */
 .sidebar {
     width: 250px;
     background: #020617;
@@ -107,7 +104,6 @@ body {
     font-weight: 500;
 }
 
-/* ================= LOGOUT ================= */
 .sidebar-bottom {
     margin-top: auto;
 }
@@ -141,7 +137,6 @@ button:hover,
     box-shadow: 0 6px 0 #0005, 0 4px 0 #cd0a4b;
 }
 
-/* ================= CONTENT ================= */
 .content {
     margin-left: 250px;
     padding: 40px 10px 40px 50px;
@@ -173,7 +168,7 @@ button:hover,
 .panel{
     padding: 20px;
 }
-/* ================= CARDS / PANELS ================= */
+
 .panel,
 .card {
     background: rgba(30, 41, 59, 0.75);
@@ -190,7 +185,6 @@ button:hover,
     transform: translateY(-2px);
 }
 
-/* Card headings spacing */
 .card h3 {
     font-size: 24px;
     color: #60a5fa;
@@ -198,7 +192,6 @@ button:hover,
     margin-bottom: 12px;
 }
 
-/* ================= TABLE ================= */
 table,
 .users-table {
     width: 100%;
@@ -223,7 +216,6 @@ table td,
     font-weight: 400;
 }
 
-/* Add left padding to all table text */
 table td,
 .users-table td {
     padding-left: 20px;
@@ -260,7 +252,6 @@ textarea:focus {
 #update{
     align-self: center;
 }
-/* ================= MESSAGES ================= */
 .message {
     padding: 10px 14px;
     border-radius: 6px;
@@ -283,7 +274,6 @@ textarea:focus {
     border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
-/* ================= RESPONSIVE ================= */
 @media(max-width: 1024px) {
     .sidebar { width: 200px; }
     .content { margin-left: 200px; }

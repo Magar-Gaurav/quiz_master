@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $email    = $conn->real_escape_string($_POST['email']);
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-  // Check if email already exists
   $check = $conn->query("SELECT id FROM users WHERE email='$email'");
   if ($check->num_rows > 0) {
     $message = "
@@ -102,11 +101,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   </header>
   <main>
 
-    <!-- Use the correct container class -->
     <div class="signup-container">
       <?php echo $message; ?>
 
-      <!-- Use the correct form class -->
       <form class="signup-form" method="POST" action="">
         <h2>Create an Account</h2>
 

@@ -10,7 +10,6 @@ if (!isset($_SESSION['admin_id'])) {
 $section = $_GET['section'] ?? "overview";
 $message = "";
 
-/* ================= PROFILE UPDATE ================= */
 
 if (isset($_POST['update_profile'])) {
 
@@ -30,7 +29,6 @@ if (isset($_POST['update_profile'])) {
     $message = "Profile updated successfully";
 }
 
-/* ================= QUIZ ACTIONS ================= */
 
 if (isset($_POST['add_quiz'])) {
 
@@ -44,19 +42,16 @@ if (isset($_POST['add_quiz'])) {
 }if (isset($_POST['delete_quiz'])) {
     $id = $_POST['quiz_id'];
 
-    // Delete quiz history first
     $stmt = $conn->prepare("DELETE FROM quiz_history WHERE quiz_id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
-    // Then delete the quiz
     $stmt = $conn->prepare("DELETE FROM quizzes WHERE id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
     $message = "Quiz deleted";
 }
-/* ================= ADD QUESTION ================= */
 
 if (isset($_POST['add_question'])) {
 
@@ -83,7 +78,6 @@ if (isset($_POST['add_question'])) {
     $message = "Question added";
 }
 
-/* ================= USER ACTIONS ================= */
 if (isset($_POST['add_user'])) {
 
     $name = trim($_POST['user_name']);
@@ -106,7 +100,6 @@ if (isset($_POST['add_user'])) {
         }
     }
 }
-/* DELETE USER */
 
 if (isset($_POST['delete_user'])) {
 
@@ -122,8 +115,6 @@ if (isset($_POST['delete_user'])) {
 
     $message = "User deleted";
 }
-
-/* EDIT USER */
 
 if (isset($_POST['edit_user'])) {
 
@@ -148,7 +139,6 @@ if (isset($_POST['edit_user'])) {
     }
 }
 
-/* ================= DASHBOARD DATA ================= */
 
 $totalQuiz = $conn->query("SELECT COUNT(*) as t FROM quizzes")->fetch_assoc()['t'];
 $totalQuestions = $conn->query("SELECT COUNT(*) as t FROM questions")->fetch_assoc()['t'];
@@ -176,8 +166,6 @@ $users = $conn->query("SELECT * FROM users");
 
     <div class="dashboard">
 
-        <!-- SIDEBAR -->
-
         <div class="sidebar">
 
             <h2 class="logo">Quiz Master</h2>
@@ -204,7 +192,6 @@ $users = $conn->query("SELECT * FROM users");
 
         </div>
 
-        <!-- CONTENT -->
 
         <div class="content">
 
@@ -216,7 +203,6 @@ $users = $conn->query("SELECT * FROM users");
 
             <?php } ?>
 
-            <!-- OVERVIEW -->
 
             <?php if ($section == "overview") { ?>
                 <h2 style="margin-bottom: 1.2rem;">Dashboard</h2>
@@ -250,7 +236,6 @@ $users = $conn->query("SELECT * FROM users");
 
             <?php } ?>
 
-            <!-- QUIZ SECTION -->
 
             <?php if ($section == "quiz") { ?>
 
@@ -310,7 +295,6 @@ $users = $conn->query("SELECT * FROM users");
 
             <?php } ?>
 
-            <!-- Questions Section -->
             <?php if ($section == "questions") { ?>
 
                 <div class="panel">
@@ -397,7 +381,6 @@ WHERE question_id={$row['id']} AND is_correct=1
                 </div>
 
             <?php } ?>
-            <!-- USERS SECTION -->
 
             <?php if ($section == "users") { ?>
 
@@ -507,7 +490,6 @@ WHERE question_id={$row['id']} AND is_correct=1
 
             <?php } ?>
 
-            <!-- PROFILE -->
 
             <?php if ($section == "profile") { ?>
 
